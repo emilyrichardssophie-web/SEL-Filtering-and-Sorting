@@ -5,7 +5,7 @@
     "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
     "source": "external",
     "author": "Tamtaro",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "category": "AIO",
     "serviceRequired": false,
     "inputs": [
@@ -1456,7 +1456,7 @@
       },
       {
         "__if": "inputs.filterLimit.visualTag",
-        "expression": "/*Only 5 x DV+HDR/HDR Only/SDR*/merge(library(streams), seadex(streams), count(slice(resolution(visualTag(visualTag(streams, 'DV'), 'HDR', 'HDR10','HDR10+'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(visualTag(streams, 'DV'), visualTag(streams, 'HDR', 'HDR10','HDR10+')),  '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(merge(visualTag(streams, 'HDR', 'HDR10', 'HDR10+', 'DV')), visualTag(streams, 'SDR', 'HLG', '10bit', 'IMAX', 'Unknown')), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5)) >0? slice(resolution(visualTag(visualTag(streams, 'DV'), 'HDR', 'HDR10','HDR10+'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(visualTag(streams, 'DV'), visualTag(streams, 'HDR', 'HDR10','HDR10+')),  '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(merge(visualTag(streams, 'HDR', 'HDR10', 'HDR10+', 'DV')), visualTag(streams, 'SDR', 'HLG', '10bit', 'IMAX', 'Unknown')), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5) : streams)",
+        "expression": "/*Only 5 x DV+HDR/HDR Only/SDR*/merge(library(streams), seadex(streams), count(slice(resolution(visualTag(visualTag(streams, 'DV'), 'HDR', 'HDR10','HDR10+'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(visualTag(streams, 'DV'), visualTag(streams, 'HDR', 'HDR10','HDR10+')),  '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(merge(visualTag(streams, 'HDR', 'HDR10', 'HDR10+', 'DV')), visualTag(streams, 'SDR', 'HLG', '10bit', 'IMAX', 'Unknown')), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5)) >0? merge(slice(resolution(visualTag(visualTag(streams, 'DV'), 'HDR', 'HDR10','HDR10+'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(visualTag(streams, 'DV'), visualTag(streams, 'HDR', 'HDR10','HDR10+')),  '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), slice(resolution(negate(merge(visualTag(streams, 'HDR', 'HDR10', 'HDR10+', 'DV')), visualTag(streams, 'SDR', 'HLG', '10bit', 'IMAX', 'Unknown')), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5)) : streams)",
         "enabled": true
       },
       {
