@@ -5,7 +5,7 @@
     "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
     "source": "external",
     "author": "Tamtaro",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "category": "AIO",
     "serviceRequired": false,
     "inputs": [
@@ -1336,97 +1336,97 @@
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin == false and inputs.passthrough.languageAnimeOnly == false",
+        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and !inputs.passthrough.languagePin and !inputs.passthrough.languageAnimeOnly",
         "expression": "/*Top {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}),'excluded')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin == true and inputs.passthrough.languageAnimeOnly == false",
+        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin and !inputs.passthrough.languageAnimeOnly",
         "expression": "/*Pin {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ pin(passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}),'excluded'), 'top')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin == false and inputs.passthrough.languageAnimeOnly == true",
+        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and !inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
         "expression": "/*Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}),'excluded') : []",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin == true and inputs.passthrough.languageAnimeOnly == true",
+        "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
         "expression": "/*Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? pin(passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}),'excluded'), 'top') : []",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language == English and inputs.passthrough.languagePin == false and inputs.passthrough.languageAnimeOnly == true",
+        "__if": "inputs.passthrough.language == English and !inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
         "expression": "/*Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? merge(seadex(streams), passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}', 'Dual Audio'), 0, {{inputs.passthrough.languageAmount}}),'excluded')) : []",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language == English and inputs.passthrough.languagePin == true and inputs.passthrough.languageAnimeOnly == true",
+        "__if": "inputs.passthrough.language == English and inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
         "expression": "/*Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? merge(seadex(streams), passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}', 'Dual Audio'), 0, {{inputs.passthrough.languageAmount}}),'excluded')) : []",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language == English and inputs.passthrough.languagePin == false and inputs.passthrough.languageAnimeOnly == true",
+        "__if": "inputs.passthrough.language == English and !inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
         "expression": "/*Pin Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? merge(pin(seadex(streams)), passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}', 'Dual Audio'), 0, {{inputs.passthrough.languageAmount}}),'excluded')) : []",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.language == English and inputs.passthrough.languagePin == true and inputs.passthrough.languageAnimeOnly == true",
+        "__if": "inputs.passthrough.language == English and inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
         "expression": "/*Pin Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? merge(pin(seadex(streams)), pin(passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}', 'Dual Audio'), 0, {{inputs.passthrough.languageAmount}}),'excluded'), 'top') : []",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes DV and inputs.passthrough.visualTagPin == false",
+        "__if": "inputs.passthrough.visualTag includes DV and inputs.passthrough.visualTagPin",
         "expression": "/*DV Passthrough*/ passthrough(slice(resolution(visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'DV'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), 'excluded')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes DV and inputs.passthrough.visualTagPin == true",
+        "__if": "inputs.passthrough.visualTag includes DV and inputs.passthrough.visualTagPin",
         "expression": "/*Pin 5 DV Passthrough*/ pin(passthrough(slice(resolution(visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'DV'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), 'excluded'), 'top')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes dvHDR and inputs.passthrough.visualTagPin == false",
+        "__if": "inputs.passthrough.visualTag includes dvHDR and inputs.passthrough.visualTagPin",
         "expression": "/*Top 5 DV+HDR Passthrough*/ passthrough(slice(resolution(visualTag(visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'DV'), 'HDR', 'HDR10','HDR10+'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), 'excluded')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes dvHDR and inputs.passthrough.visualTagPin == true",
+        "__if": "inputs.passthrough.visualTag includes dvHDR and inputs.passthrough.visualTagPin",
         "expression": "/*Pin 5 DV+HDR Passthrough*/ pin(passthrough(slice(resolution(visualTag(visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'DV'), 'HDR', 'HDR10','HDR10+'), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), 'excluded'), 'top')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes HDRonly and inputs.passthrough.visualTagPin == true",
+        "__if": "inputs.passthrough.visualTag includes HDRonly and inputs.passthrough.visualTagPin",
         "expression": "/*Top 5 HDRonly Passthrough*/ passthrough(slice(resolution(negate(visualTag(streams, 'DV'), visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'HDR', 'HDR10','HDR10+')),  '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), 'excluded')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes HDRonly and inputs.passthrough.visualTagPin == true",
+        "__if": "inputs.passthrough.visualTag includes HDRonly and inputs.passthrough.visualTagPin",
         "expression": "/*Pin 5 HDRonly Passthrough*/ pin(passthrough(slice(resolution(negate(visualTag(streams, 'DV'), visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'HDR', 'HDR10','HDR10+')),  '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5), 'excluded'), 'top')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes SDR and inputs.passthrough.visualTagPin == false",
+        "__if": "inputs.passthrough.visualTag includes SDR and inputs.passthrough.visualTagPin",
         "expression": "/*Top 5 SDR*/ passthrough(slice(resolution(negate(visualTag(streams, 'HDR', 'HDR10', 'HDR10+', 'DV'), visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'SDR', 'HLG', '10bit', 'IMAX', 'Unknown')), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5),'excluded')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.visualTag includes SDR and inputs.passthrough.visualTagPin == true",
+        "__if": "inputs.passthrough.visualTag includes SDR and inputs.passthrough.visualTagPin",
         "expression": "/*Pin 5 SDR*/ pin(passthrough(slice(resolution(negate(visualTag(streams, 'HDR', 'HDR10', 'HDR10+', 'DV'), visualTag(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), 'SDR', 'HLG', '10bit', 'IMAX', 'Unknown')), '2160p', '1080p', '720p', '480p', 'Unknown'), 0, 5),'excluded'), 'top')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.top1ResPin == true",
+        "__if": "inputs.passthrough.top1ResPin",
         "expression": "/*Top 1 Per Resolution (3 Max)*/ pin(merge(seadex(streams), passthrough(slice(negate(merge(library(streams), uncached(type(streams, 'debrid'))), merge(slice(resolution(streams,'2160p'), 0, 1), slice(resolution(streams,'1080p'), 0, 1), slice(resolution(streams,'720p'), 0, 1), slice(resolution(streams,'576p','480p','Unknown'), 0, 1))), 0, 3), 'excluded')), 'top')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.top1QualResPin == true",
+        "__if": "inputs.passthrough.top1QualResPin",
         "expression": "/*Top 1 Per Quality/Resolution (6 Max)*/ pin(merge(seadex(streams), passthrough(slice(negate(merge(library(streams), uncached(type(streams, 'debrid'))), merge(slice(quality(resolution(streams,'2160p'),'Bluray REMUX'),0,1),slice(quality(resolution(streams,'2160p'),'Bluray'),0,1), slice(quality(resolution(streams,'2160p'),'WEB-DL'),0,1),slice(quality(resolution(streams,'1080p'),'Bluray REMUX'),0,1), slice(quality(resolution(streams,'1080p'),'Bluray'),0,1),slice(quality(resolution(streams,'1080p'),'WEB-DL'),0,1), slice(quality(resolution(streams,'720p'),'Bluray REMUX'),0,1),slice(quality(resolution(streams,'720p'),'Bluray'),0,1), slice(quality(resolution(streams,'720p'),'WEB-DL'),0,1))), 0, 6), 'excluded')), 'top')",
         "enabled": true
       },
       {
-        "__if": "inputs.passthrough.usenetTopQualRes == true",
+        "__if": "inputs.passthrough.usenetTopQualRes",
         "expression": "/*Top {{inputs.passthrough.usenetTopQualRes}} Usenet Per Quality/Resolution (6 Max)*/ passthrough(slice(negate(merge(library(streams), message(streams,'includes','✅','🧝')), merge(slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'Bluray REMUX'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'Bluray'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'WEB-DL'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'Bluray REMUX'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'Bluray'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'WEB-DL'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'Bluray REMUX'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'Bluray'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'WEB-DL'),0,{{inputs.passthrough.usenetTopQualRes}}))), 0, {{inputs.passthrough.usenetTopQualRes}}*6), 'excluded')",
         "enabled": true
       },
