@@ -5,7 +5,7 @@
     "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
     "source": "external",
     "author": "Tamtaro",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "category": "AIO",
     "serviceRequired": false,
     "inputs": [
@@ -2401,7 +2401,7 @@
     "serviceWrap": {
       "enabled": {
         "__if": "services",
-        "__value": true
+        "__value": false
       },
       "reconfigureService": false
     }
