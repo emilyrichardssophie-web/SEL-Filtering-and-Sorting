@@ -5,7 +5,7 @@
     "description": "A focused template for importing partial aspects of Tamtaro SEL Setup, without overriding your existing configurations. Use this 'Partial' template if you want to keep your current setup but upgrade your filtering and sorting logic. \n* **Core Filtering Engine**: Choose between **Standard** (keeps top 3 streams per Quality/Resolution, approx. 20 total) or **Extended** (keeps top 6, approx. 40 total) to eliminate clutter while maintaining quality coverage.\n* **Synced URL Integration**: Automatically pulls the latest synced URLs for Excluded, Included, and Preferred Stream Expressions from [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting).\n* To use Preferred Stream Expressions, ensure 'Stream Expressions' is added to your Sort Order.\n* **Custom Formatter Only**: Includes the custom Tamtaro formatter with options for a clean look or a full debug view (RSE Matched).",
     "source": "external",
     "author": "Tamtaro",
-    "version": "2.0.8",
+    "version": "2.0.9",
     "category": "AIO",
     "serviceRequired": false,
     "services": [],
@@ -16,6 +16,13 @@
         "description": "Only selected options will be imported into AIOStreams. Everything else is untouched.",
         "type": "alert",
         "intent": "info"
+      },
+      {
+        "id": "header.formatterinfo",
+        "name": "",
+        "description": "This formatter displays special tags from ranked stream expressions (RSE) matched. Designed to work with [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex), which you'll need to import separately.",
+        "type": "alert",
+        "intent": "info-basic"
       },
       {
         "id": "formatterChoice",
@@ -44,9 +51,9 @@
         ]
       },
       {
-        "id": "header.formatterinfo",
+        "id": "header.selinfo",
         "name": "",
-        "description": "This formatter displays special tags from ranked stream expressions (RSE) matched. Designed to work with [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex), which you'll need to import separately.",
+        "description": "Standard/Extended SEL Only automatically pulls the latest synced URLs for Excluded, Included, and Preferred Stream Expressions from [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting) so you'll receive latest SEL hotfixes automatically. Set & forget. To use Preferred Stream Expressions, ensure 'Stream Expressions' is added to your Sort Order.",
         "type": "alert",
         "intent": "info-basic"
       },
@@ -73,11 +80,12 @@
         ]
       },
       {
-        "id": "header.selinfo",
-        "name": "",
-        "description": "Standard/Extended SEL Only automatically pulls the latest synced URLs for Excluded, Included, and Preferred Stream Expressions from [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting) so you'll receive latest SEL hotfixes automatically. Set & forget. To use Preferred Stream Expressions, ensure 'Stream Expressions' is added to your Sort Order.",
-        "type": "alert",
-        "intent": "info-basic"
+        "id": "syncedOnly",
+        "name": "Import Only Synced URLs",
+        "description": "If selected, this will import only the synced URLs for your core filter selection above, keeping your existing regular SEL fields intact (such as optional SELs from the Complete Setup or manual additions).",
+        "type": "boolean",
+        "required": false,
+        "default": false
       },
       {
         "id": "credits",
@@ -170,60 +178,60 @@
       }
     },
     "excludedStreamExpressions": {
-      "__switch": "inputs.coreFilter",
-      "cases": {
-        "extended": [
-          {
-            "expression": "/*Core Filtering by Extended SEL. Reimport Tamtaro's template or visit GitHub for more optional SELs*/ []",
-            "enabled": true
-          },
-          {
-            "expression": "/*Selfhosters: Enable synced urls by setting SEL_SYNC_ACCESS=all or TEMPLATE_URLS env https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json */[]",
-            "enabled": true
-          }
-        ],
-        "standard": [
-          {
-            "expression": "/*Core Filtering by Standard SEL. Reimport Tamtaro's template or visit GitHub for more optional SELs*/ []",
-            "enabled": true
-          },
-          {
-            "expression": "/*Selfhosters: Enable synced urls by setting SEL_SYNC_ACCESS=all or TEMPLATE_URLS env https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json */[]",
-            "enabled": true
-          }
-        ],
-        "none": {
-          "__remove": true
+      "__if": "!inputs.syncedOnly and !inputs.coreFilter == none",
+      "__value": {
+        "__switch": "inputs.coreFilter",
+        "cases": {
+          "standard": [
+            {
+              "expression": "/*Core Filtering by Standard SEL. Reimport Tamtaro's template or visit GitHub for more optional SELs*/ []",
+              "enabled": true
+            },
+            {
+              "expression": "/*Selfhosters: Enable synced urls by setting SEL_SYNC_ACCESS=all or TEMPLATE_URLS env https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json */[]",
+              "enabled": true
+            }
+          ],
+          "extended": [
+            {
+              "expression": "/*Core Filtering by Extended SEL. Reimport Tamtaro's template or visit GitHub for more optional SELs*/ []",
+              "enabled": true
+            },
+            {
+              "expression": "/*Selfhosters: Enable synced urls by setting SEL_SYNC_ACCESS=all or TEMPLATE_URLS env https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json */ []",
+              "enabled": true
+            }
+          ]
         }
       }
     },
     "preferredStreamExpressions": {
-      "__switch": "inputs.coreFilter",
-      "cases": {
-        "standard": [
-          {
-            "expression": "/*If you are using SEL Only Template, add Stream Expressions in Sort Order to use synced url below.*/ []",
-            "enabled": true
-          }
-        ],
-        "extended": [
-          {
-            "expression": "/*If you are using SEL Only Template, add Stream Expressions in Sort Order to use synced url below.*/ []",
-            "enabled": true
-          }
-        ],
-        "none": {
-          "__remove": true
+      "__if": "!inputs.syncedOnly and !inputs.coreFilter == none",
+      "__value": {
+        "__switch": "inputs.coreFilter",
+        "cases": {
+          "standard": [
+            {
+              "expression": "/*If you are using SEL Only Template, add Stream Expressions in Sort Order to use synced url below.*/ []",
+              "enabled": true
+            }
+          ],
+          "extended": [
+            {
+              "expression": "/*If you are using SEL Only Template, add Stream Expressions in Sort Order to use synced url below.*/ []",
+              "enabled": true
+            }
+          ]
         }
       }
     },
     "includedStreamExpressions": {
-      "__switch": "inputs.coreFilter",
-      "cases": {
-        "standard": [],
-        "extended": [],
-        "none": {
-          "__remove": true
+      "__if": "!inputs.syncedOnly and !inputs.coreFilter == none",
+      "__value": {
+        "__switch": "inputs.coreFilter",
+        "cases": {
+          "standard": [],
+          "extended": []
         }
       }
     }
