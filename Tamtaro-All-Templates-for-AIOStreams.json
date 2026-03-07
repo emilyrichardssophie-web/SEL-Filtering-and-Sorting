@@ -6,7 +6,7 @@
       "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
       "source": "external",
       "author": "Tamtaro",
-      "version": "2.1.0",
+      "version": "2.0.10",
       "category": "AIO",
       "serviceRequired": false,
       "changelogUrl": "https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/CHANGELOG.md",
@@ -546,7 +546,7 @@
         {
           "id": "optionalFilters",
           "name": "Recommended Optional SELs",
-          "description": "**☑ NZB Only**: keeps only health-checked Zyclops/UsenetStreamer results, removes rest. **DV Profile 5**: removes DV Only Non-Remux streams. **4K Remux or 1080p Remux**: removes 1080p or 4k Remux due to device compatability or file size. **Bitrate Hardcap (Mobile)**: removes bitrate over 4K@8Mbps · 1080p@3Mbps · 720p@2Mbps. **Bitrate Softcap (Travel)**: dynamic, doesn't remove higher-bitrate streams if choices are few",
+          "description": "**☑ NZB Only**: keeps only health-checked Zyclops/UsenetStreamer results, removes rest. **DV Profile 5**: removes DV Only Non-Remux streams. **4K Remux or 1080p Remux**: removes 1080p or 4k Remux due to device compatability or file size.",
           "type": "multi-select",
           "required": false,
           "advanced": true,
@@ -567,26 +567,22 @@
             {
               "value": "1080pRemux",
               "label": "1080p Remux"
-            },
-            {
-              "value": "bitrateHardcapMobile",
-              "label": "Bitrate Hardcap (Mobile)"
-            },
-            {
-              "value": "bitrateSoftcapTravel",
-              "label": "Bitrate Softcap (Travel)"
             }
           ]
         },
         {
-          "id": "internetSpeedCap",
-          "name": "Internet Speed",
-          "description": "Select your internet connection speed. Streams too large for your connection will be removed. A small buffer (20%) is applied to leave headroom for other network activity. Stacks with per-resolution bitrate caps above.",
+          "id": "bitrateCap",
+          "name": "Bitrate Limit (Mbps)",
+          "description": "Select your desired bitrate limit. Streams exceeding 80% of this limit at 4K, 50% at 1080P and 30% at 720P will be removed.",
           "type": "select",
           "required": false,
           "advanced": true,
-          "default": "200",
+          "default": "150",
           "options": [
+            {
+              "value": "10",
+              "label": "<10 Mbps (Data saver)"
+            },
             {
               "value": "25",
               "label": "25 Mbps"
@@ -600,10 +596,18 @@
               "label": "100 Mbps"
             },
             {
-              "value": "200",
-              "label": "200+ Mbps (uncapped)"
+              "value": "150",
+              "label": ">150 Mbps (Uncapped)"
             }
           ]
+        },
+        { "id": "bitrateBoost",
+          "name": "Low Bitrate Boost",
+          "description": "Instead of removing high-bitrate streams, this option prioritizes streams that fit bitrate limit by boosting their ranking in preferred stream expressions. Within each Resolution/Quality category, large files are pushed to the bottom of the result list and kept as backup options if low bitrate options are few or unavailable.",
+          "type": "boolean",
+          "required": false,
+          "advanced": true,
+          "default": false
         },
         {
           "id": "passthrough",
@@ -1444,21 +1448,6 @@
           "enabled": true
         },
         {
-          "__if": "inputs.internetSpeedCap == 25",
-          "expression": "/*Internet Speed Cap 25Mbps*/ bitrate(streams, '20Mbps')",
-          "enabled": true
-        },
-        {
-          "__if": "inputs.internetSpeedCap == 50",
-          "expression": "/*Internet Speed Cap 50Mbps*/ bitrate(streams, '40Mbps')",
-          "enabled": true
-        },
-        {
-          "__if": "inputs.internetSpeedCap == 100",
-          "expression": "/*Internet Speed Cap 100Mbps*/ bitrate(streams, '80Mbps')",
-          "enabled": true
-        },
-        {
           "__if": "inputs.passthrough.language != none and !inputs.passthrough.languagePin and !inputs.passthrough.languageAnimeOnly",
           "expression": "/*Top {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required')",
           "enabled": true
@@ -1544,8 +1533,8 @@
           "enabled": true
         },
         {
-          "__if": "inputs.optionalFilters includes bitrateSoftcapTravel",
-          "expression": "/*Bitrate Softcap for Travel*/ merge(     bitrate(resolution(streams,'2160p'), count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'2160p'),1,'6Mbps'))>5?'6Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'2160p'),1,'9Mbps'))>5?'9Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'2160p'),1,'12Mbps'))>5?'12Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'2160p'),1,'15Mbps'))>5?'15Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'2160p'),1,'20Mbps'))>5?'20Mbps': max(values(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'2160p'),'bitrate')) ), bitrate(resolution(streams,'1440p','1080p'), count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'1440p','1080p'),1,'6Mbps'))>5?'6Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'1440p','1080p'),1,'9Mbps'))>5?'9Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'1440p','1080p'),1,'12Mbps'))>5?'12Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'1440p','1080p'),1,'15Mbps'))>5?'15Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'1440p','1080p'),1,'20Mbps'))>5?'20Mbps': max(values(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'1440p','1080p'),'bitrate')) ), bitrate(resolution(streams,'720p'), count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'720p'),1,'6Mbps'))>5?'6Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'720p'),1,'9Mbps'))>5?'9Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'720p'),1,'12Mbps'))>5?'12Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'720p'),1,'15Mbps'))>5?'15Mbps': count(bitrate(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'720p'),1,'20Mbps'))>5?'20Mbps': max(values(resolution(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')),'720p'),'bitrate')) ))",
+          "__if": "inputs.bitrateCap != 150 and !inputs.bitrateBoost",
+          "expression": "/*Bitrate Hardcap: {{inputs.bitrateCap}} Mbps*/ merge(bitrate(resolution(streams, '2160p'), '{{inputs.bitrateCap}}'*0.8*1000000), bitrate(resolution(streams, '1080p'), {{inputs.bitrateCap}}'*0.5*1000000), bitrate(resolution(streams, '720p'), {{inputs.bitrateCap}}'*0.3*1000000))",
           "enabled": true
         },
         {
@@ -1576,6 +1565,11 @@
         }
       ],
       "preferredStreamExpressions": [
+        {
+          "__if": "inputs.bitrateCap != 150 and inputs.bitrateBoost",
+          "expression": "/*Low Bitrate Boost*/ merge(bitrate(resolution(streams, '2160p'), 1, '{{inputs.bitrateCap}}'*0.8*1000000), bitrate(resolution(streams, '1080p'), 1, '{{inputs.bitrateCap}}'*0.5*1000000), bitrate(resolution(streams, '720p'), 1, '{{inputs.bitrateCap}}'*0.3*1000000))",
+          "enabled": true
+        },
         {
           "__if": "inputs.usenet.usenetSort",
           "expression": "/*Boost Cached Usenet*/ merge(cached(type(streams, 'usenet', 'debrid')), type(streams, 'stremio-usenet'))",
