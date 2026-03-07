@@ -1,7 +1,34 @@
 # Changelog
 
+## 2.1.0 (2026-03-07)
+ - New: quick links for SEL content
+    - SEL Setup
+       - https://git.tamtaro.de (Main GitHub)
+       - https://git.tamtaro.de/complete.json
+       - https://git.tamtaro.de/changelog
+       - https://git.tamtaro.de/viren-guide
+    - AIOStreams instance
+       - https://git.tamtaro.de/yeb, https://git.tamtaro.de/yeb-stable
+       - https://git.tamtaro.de/midnight, https://git.tamtaro.de/midnight-stable
+       - https://git.tamtaro.de/kuu, https://git.tamtaro.de/kuu-stable
+       - https://git.tamtaro.de/viren (nightly)
+       - https://git.tamtaro.de/omni (stable)
+       - https://git.tamtaro.de/atbphosting (stable)
+       - https://git.tamtaro.de/elfhosted (stable)
+     - Synced URLs (for selfhosters)
+        - https://git.tamtaro.de/ISE.json
+        - https://git.tamtaro.de/PSE.json
+        - https://git.tamtaro.de/ESE-extended.json
+        - https://git.tamtaro.de/ESE-standard.json
+ - New: Subtitle Addon option, select a language for the OpenSubtitles V3+ addon to be added
+ - Update: `4K Remux` and `1080P Remux` now run *after* core SEL fake bluray filters, so having no remux shouldn't cause false positive anymore
+    - Achieved by use of SEL override, enabling the corresponding remux filter inside the synced ESE list
+ - Update: Reworked sort order, clearer distinctions.
+    - P2P and Boost Uncached Usenet Sort Order will be Global Only
+    - Debrid/Usenet will remain Cached + Uncached
+
 ## 2.0.10 (2026-03-07)
- - New feat: Bitrate Options Submenu: Bitrate Limit
+ - New/Update: Bitrate Options Submenu: Bitrate Limit
     - Check out [Avangelista's PR](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting/pull/12) for more details
     - `Low Bitrate Ranking Boost` deprioritizes streams outside bitrate limit via PSE
     - `Low Bitrate Sorting Boost` sorts bitrate within same resolution/quality category from lowest to highest
