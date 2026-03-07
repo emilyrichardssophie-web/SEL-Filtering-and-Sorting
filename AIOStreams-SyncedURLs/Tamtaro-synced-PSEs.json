@@ -1,15 +1,30 @@
-{
-  "metadata": {
-    "name": "preferredStreamExpressions",
-    "author": "Tamtaro",
-    "description": "You should not need to import this synced url manually. It's included in my SEL Setup templates. Ensure your AIOStreams instance has appropriate permissions in their .env to support my urls. Simply add my all-in-one template url to TEMPLATE_URLS = https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/Tamtaro-All-Templates-for-AIOStreams.json. Alternatively, to only import this json, use this url inside Filter-> Stream Expressions -> Preferred: https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/AIOStreams-SyncedURLs/Tamtaro-synced-PSEs.json",
-    "version": "1.0.1"
+[
+  {
+    "expression": "/*Part of Tamtaro SEL Setup/*[]",
+    "enabled": true
   },
-  "values": [
-    "/*Add Stream Expressions in Sort Order to prioritize stream types below.*/[]",
-    "/*Tier 1 Cached*/ cached(merge(library(streams),seadex(streams),type(streams,'debrid'),type(service(streams,'torbox'),'usenet'),message(type(streams,'usenet','stremio-usenet'),'includes','✅','🧝')))",
-    "/*Tier 2 Cached*/ merge(cached(type(streams, 'usenet')), type(streams, 'stremio-usenet', 'http', 'p2p'))",
-    "/*Tier 3 Uncached*/uncached(type(streams,'usenet'))",
-    "/*Tier 4 Uncached*/uncached(type(streams,'debrid'))"
-  ]
-}
+  {
+    "expression": "/*PSE v1.1.0/*[]",
+    "enabled": true
+  },
+  {
+    "expression": "/*git.tamtaro.de*[]",
+    "enabled": true
+  },
+  {
+    "expression": "/*Tier 1 Cached*/ cached(merge(library(streams),seadex(streams),type(streams,'debrid'),type(service(streams,'torbox'),'usenet'),message(type(streams,'usenet','stremio-usenet'),'includes','✅','🧝')))",
+    "enabled": true
+  },
+  {
+    "expression": "/*Tier 2 Cached*/ merge(cached(type(streams, 'usenet')), type(streams, 'stremio-usenet', 'http', 'p2p'))",
+    "enabled": true
+  },
+  {
+    "expression": "/*Tier 3 Uncached*/uncached(type(streams,'usenet'))",
+    "enabled": true
+  },
+  {
+    "expression": "/*Tier 4 Uncached*/uncached(type(streams,'debrid'))",
+    "enabled": true
+  }
+]
