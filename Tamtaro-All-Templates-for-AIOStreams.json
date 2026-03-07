@@ -6,7 +6,7 @@
       "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
       "source": "external",
       "author": "Tamtaro",
-      "version": "2.0.9",
+      "version": "2.1.0",
       "category": "AIO",
       "serviceRequired": false,
       "changelogUrl": "https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/CHANGELOG.md",
@@ -575,6 +575,33 @@
             {
               "value": "bitrateSoftcapTravel",
               "label": "Bitrate Softcap (Travel)"
+            }
+          ]
+        },
+        {
+          "id": "internetSpeedCap",
+          "name": "Internet Speed",
+          "description": "Select your internet connection speed. Streams too large for your connection will be removed. A small buffer (20%) is applied to leave headroom for other network activity. Stacks with per-resolution bitrate caps above.",
+          "type": "select",
+          "required": false,
+          "advanced": true,
+          "default": "200",
+          "options": [
+            {
+              "value": "25",
+              "label": "25 Mbps"
+            },
+            {
+              "value": "50",
+              "label": "50 Mbps"
+            },
+            {
+              "value": "100",
+              "label": "100 Mbps"
+            },
+            {
+              "value": "200",
+              "label": "200+ Mbps (uncapped)"
             }
           ]
         },
@@ -1414,6 +1441,21 @@
         {
           "__if": "inputs.optionalFilters includes 1080pRemux",
           "expression": "/*1080p Remux Filter*/ resolution(quality(streams,'BluRay REMUX'), '1080p')",
+          "enabled": true
+        },
+        {
+          "__if": "inputs.internetSpeedCap == 25",
+          "expression": "/*Internet Speed Cap 25Mbps*/ bitrate(streams, '20Mbps')",
+          "enabled": true
+        },
+        {
+          "__if": "inputs.internetSpeedCap == 50",
+          "expression": "/*Internet Speed Cap 50Mbps*/ bitrate(streams, '40Mbps')",
+          "enabled": true
+        },
+        {
+          "__if": "inputs.internetSpeedCap == 100",
+          "expression": "/*Internet Speed Cap 100Mbps*/ bitrate(streams, '80Mbps')",
           "enabled": true
         },
         {
@@ -2532,7 +2574,7 @@
       "description": "A focused template for importing partial aspects of Tamtaro SEL Setup, without overriding your existing configurations. Use this 'Partial' template if you want to keep your current setup but upgrade your filtering and sorting logic. \n* **Core Filtering Engine**: Choose between **Standard** (keeps top 3 streams per Quality/Resolution, approx. 20 total) or **Extended** (keeps top 6, approx. 40 total) to eliminate clutter while maintaining quality coverage.\n* **Synced URL Integration**: Automatically pulls the latest synced URLs for Excluded, Included, and Preferred Stream Expressions from [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting).\n* To use Preferred Stream Expressions, ensure 'Stream Expressions' is added to your Sort Order.\n* **Custom Formatter Only**: Includes the custom Tamtaro formatter with options for a clean look or a full debug view (RSE Matched).",
       "source": "external",
       "author": "Tamtaro",
-      "version": "2.0.9",
+      "version": "2.1.0",
       "category": "AIO",
       "serviceRequired": false,
       "services": [],
