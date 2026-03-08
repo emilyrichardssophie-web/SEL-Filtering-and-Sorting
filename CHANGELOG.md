@@ -9,7 +9,7 @@
 
  - Fixed: bitrate cap SEL now working
  - Fixed: Subtitle addon now adds to your setup when language is selected
- - Removed extra sootio library ESE filter
+ - Minor: Removed extra sootio library ESE filter
 
 ## 2.1.0 (2026-03-07)
 
