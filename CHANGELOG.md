@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.3 (2026-03-08)
+
+ - New: Addon name field under Misc Options, and versioning built into addon description.
+    - Defaults to AIOStreams, with select few options to choose from as suggested by #The SELebrities on discord (so you can blame them)
+       - Don't like any of them? Good news! You can enter your own creativity right there in the menu
+    - Choose "Keep existing name" to not replace your existing name
+
 ## 2.1.2 (2026-03-08)
 
  - Fixed: previously added Searchⁿᶻᵇ(Torbox) addon will now be removed in future re-importing of template when Torbox Service is not selected
