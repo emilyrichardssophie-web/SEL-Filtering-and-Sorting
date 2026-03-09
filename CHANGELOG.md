@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.4 (2026-03-08)
+## 2.1.4 (2026-03-09)
 
  - New: Added new multi-select `Device Specific Exclusions` for streams your device can't handle
    - All 4k, 4k-720P Remux, DTS, TrueHD, DV-Only, HDR, DV-Only Non-Remux
@@ -9,6 +9,7 @@
      - Corresponds to ESE v1.2.0 update
 - Update: Global timeout now set to 5000 ms
    - Increase if you want to get too many timeouts and want to see more results
+- Minor: Removed `☑ NZB-Only` optional SEL since the passthrough alternatives (`☑ NZB Passthrough` and `☑ NZB-Only Passthrough`) are better anyway
 
 ## 2.1.3 (2026-03-08)
 
