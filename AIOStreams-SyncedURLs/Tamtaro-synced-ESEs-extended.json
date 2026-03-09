@@ -4,7 +4,7 @@
     "enabled": true
   },
   {
-    "expression": "/*Extended ESE v1.2.1 [git.tamtaro.de]*/[]",
+    "expression": "/*Extended ESE v1.2.2 [git.tamtaro.de]*/[]",
     "enabled": true
   },
   {
@@ -65,6 +65,10 @@
   },
   {
     "expression": "/*No DV-Only*/ visualTag(streams,'DV Only')",
+    "enabled": false
+  },
+  {
+    "expression": "/*No HDR*/ visualTag(streams, 'HDR10+')",
     "enabled": false
   },
   {
