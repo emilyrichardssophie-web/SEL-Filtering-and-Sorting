@@ -68,11 +68,11 @@
     "enabled": false
   },
   {
-    "expression": "/*No HDR*/ visualTag(streams, 'HDR10+')",
+    "expression": "/*No HDR10+ Only*/ visualTag(streams, 'HDR10+')",
     "enabled": false
   },
   {
-    "expression": "/*No HDR*/ visualTag(streams, 'HDR', 'HDR10','HDR10+')",
+    "expression": "/*No HDR (All)*/ visualTag(streams, 'HDR', 'HDR10','HDR10+')",
     "enabled": false
   },
   {
